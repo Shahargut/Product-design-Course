@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>קורס עיצוב מוצר - Web App</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#fff;
+      --text:#111827;
+      --muted:#6b7280;
+      --pri:#2563eb;
+      --pri2:#1d4ed8;
+      --line:#e5e7eb;
+      --soft:#eef2ff;
+      --good:#dcfce7;
+      --goodText:#166534;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    header{
+      position:sticky;
+      top:0;
+      background:rgba(244,247,251,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      z-index:20;
+    }
+    nav{
+      max-width:1280px;
+      margin:0 auto;
+      padding:14px 20px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .brand strong{
+      font-size:18px;
+    }
+    .brand span{
+      color:var(--muted);
+      font-size:13px;
+    }
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      border-radius:999px;
+      padding:10px 14px;
+      background:#e5eefc;
+      color:var(--pri2);
+      cursor:pointer;
+      font-weight:700;
+      font-size:14px;
+      transition:.2s ease;
+    }
+    button:hover{transform:translateY(-1px)}
+    button.active{
+      background:var(--pri);
+      color:#fff;
+    }
+    main{
+      max-width:1280px;
+      margin:0 auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:18px;
+      align-items:start;
+    }
+    .panel,.content{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(17,24,39,.05);
+    }
+    .panel{
+      padding:18px;
+      position:sticky;
+      top:84px;
+      height:calc(100vh - 104px);
+      overflow:auto;
+    }
+    .content{
+      padding:22px;
+      min-height:calc(100vh - 120px);
+    }
+    .hero{
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#dbeafe,#eff6ff);
+      margin-bottom:16px;
+    }
+    .hero h1,.hero h2{
+      margin:0 0 10px;
+    }
+    .pill{
+      display:inline-block;
+      background:var(--soft);
+      color:#3730a3;
+      padding:6px 10px;
+      border-radius:999px;
+      margin:4px 6px 0 0;
+      font-size:13px;
+    }
+    .section{
+      display:none;
+    }
+    .section.active{
+      display:block;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+      margin:12px 0;
+      background:#fff;
+    }
+    .card h3,.card h4{
+      margin:0 0 8px;
+    }
+    .muted, small{
+      color:var(--muted);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+    }
+    ul{
+      margin:8px 0 0 18px;
+      line-height:1.9;
+    }
+    a{
+      color:var(--pri2);
+      text-decoration:none;
+    }
+    a:hover{text-decoration:underline}
+    input,select,textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      font:inherit;
+      background:#fff;
+    }
+    label{
+      display:block;
+      margin:10px 0 6px;
+      font-weight:700;
+    }
+    .progress{
+      height:10px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+      margin:10px 0 6px;
+    }
+    .bar{
+      height:100%;
+      width:62%;
+      background:linear-gradient(90deg,var(--pri),#60a5fa);
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--good);
+      color:var(--goodText);
+      font-size:13px;
+      font-weight:700;
+      margin-top:8px;
+    }
+    .timeline{
+      display:grid;
+      gap:10px;
+    }
+    .week{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:12px;
+      align-items:start;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fafafa;
+    }
+    .week strong{
+      color:var(--pri2);
+    }
+    .lesson-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px;
+    }
+    .meta{
+      font-size:12px;
+      padding:5px 8px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#3730a3;
+    }
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:16px 0;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .table th,.table td{
+      padding:12px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+      text-align:right;
+      font-size:14px;
+    }
+    .table th{
+      background:#f9fafb;
+      font-weight:700;
+    }
+    .list-check li{
+      list-style:disc;
+    }
+    .footnote{
+      font-size:13px;
+      color:var(--muted);
+    }
+    @media (max-width:960px){
+      main{grid-template-columns:1fr}
+      .panel{
+        position:relative;
+        top:auto;
+        height:auto;
+      }
+      .two-col{grid-template-columns:1fr}
+      .week{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav>
+    <div class="brand">
+      <strong>קורס עיצוב מוצר | Web App</strong>
+      <span>סילבוס, שיעורים, משימות, מבחנים ופרויקט מסכם</span>
+    </div>
+    <div class="tabs" id="tabs">
+      <button class="active" data-target="home">בית</button>
+      <button data-target="syllabus">סילבוס</button>
+      <button data-target="lessons">שיעורים</button>
+      <button data-target="tasks">משימות</button>
+      <button data-target="exam">מבחנים</button>
+      <button data-target="project">פרויקט</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <aside class="panel">
+    <div class="hero">
+      <h2>מסלול 12 שבועות</h2>
+      <p>2 מפגשים בשבוע, שעה לכל מפגש, עם משימות ביניים ותוצר מסכם.</p>
+      <div class="progress"><div class="bar"></div></div>
+      <small>התקדמות קורס: 62%</small>
+      <div class="tag">ממשק לימודי נגיש ופשוט</div>
+    </div>
+
+    <div class="card">
+      <h3>קישורים מהירים</h3>
+      <ul>
+        <li><a href="https://developer.apple.com/design/human-interface-guidelines" target="_blank" rel="noreferrer">Apple Human Interface Guidelines</a></li>
+        <li><a href="https://developer.apple.com/design/resources/" target="_blank" rel="noreferrer">Apple Design Resources</a></li>
+        <li><a href="https://developer.apple.com/design/human-interface-guidelines/accessibility" target="_blank" rel="noreferrer">Apple Accessibility</a></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>סטטוס שבועי</h3>
+      <p class="muted">שבוע 5: קונספט ותיעדוף רעיונות</p>
+      <p>משימה פתוחה: הגשת 3 קונספטים מגובשים.</p>
+    </div>
+
+    <div class="card">
+      <h3>איך עובד הקורס</h3>
+      <ul class="list-check">
+        <li>שיעור ראשון בכל שבוע: תיאוריה ומושגים.</li>
+        <li>שיעור שני: תרגול, דוגמאות ודיון.</li>
+        <li>בין השיעורים: משימת ביניים קצרה.</li>
+      </ul>
+    </div>
+  </aside>
+
+  <section class="content">
+    <div class="section active" id="home">
+      <div class="hero">
+        <h1>ברוכים הבאים לקורס עיצוב מוצר</h1>
+        <p>ממשק לימודי פשוט ונגיש לתוכן, משימות, בחינות ופרויקט מסכם.</p>
+        <span class="pill">Human-Centered Design</span>
+        <span class="pill">Case Studies</span>
+        <span class="pill">Prototyping</span>
+        <span class="pill">User Research</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>מטרות</h3>
+          <ul>
+            <li>הבנת תהליך עיצוב מוצר מלא.</li>
+            <li>תרגול חשיבה מושגית וסקיצות.</li>
+            <li>פיתוח אבטיפוס והצגה.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>מבנה</h3>
+          <ul>
+            <li>חודש 1: יסודות.</li>
+            <li>חודש 2: קונספט.</li>
+            <li>חודש 3: אימות והצגה.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>תכנים נלמדים</h3>
+        <div class="lesson-meta">
+          <span class="meta">Design thinking</span>
+          <span class="meta">Framing</span>
+          <span class="meta">Ideation</span>
+          <span class="meta">Prototyping</span>
+          <span class="meta">Testing</span>
+          <span class="meta">Presentation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="syllabus">
+      <h1>סילבוס מפורט</h1>
+      <div class="card">
+        <h3>חודש 1</h3>
+        <p>יסודות, מושגים, מחקר משתמשים, framing וניתוח בעיות.</p>
+      </div>
+      <div class="card">
+        <h3>חודש 2</h3>
+        <p>Ideation, סינון רעיונות, בחירת קונספט והכנה לאבטיפוס.</p>
+      </div>
+      <div class="card">
+        <h3>חודש 3</h3>
+        <p>Prototyping, בדיקות, רפלקציה, שיפור והצגת פרויקט סופי.</p>
+      </div>
+      <div class="card">
+        <h3>חלוקת הערכה</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>רכיב</th>
+              <th>אחוז</th>
+              <th>הערות</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>משימות ביניים</td>
+              <td>25%</td>
+              <td>תרגילי עומק קצרים לאורך הסמסטר.</td>
+            </tr>
+            <tr>
+              <td>מבחן אמצע</td>
+              <td>20%</td>
+              <td>מושגים, ניתוח מקרה וכתיבה מקצועית.</td>
+            </tr>
+            <tr>
+              <td>פרויקט מסכם</td>
+              <td>45%</td>
+              <td>מחקר, קונספט, אבטיפוס, הצגה.</td>
+            </tr>
+            <tr>
+              <td>השתתפות</td>
+              <td>10%</td>
+              <td>מעורבות, משוב ודיון מקצועי.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="lessons">
+      <h1>שיעורים לפי שבוע</h1>
+      <div class="timeline">
+        <div class="week">
+          <strong>שבוע 1</strong>
+          <div>
+            <p>היכרות עם עיצוב מוצר ותהליך העבודה.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 1: מושגי יסוד</span>
+              <span class="meta">מפגש 2: Human-centered design</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 2</strong>
+          <div>
+            <p>מחקר משתמשים, personas, journey map ותצפית.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 3: Research</span>
+              <span class="meta">מפגש 4: Persona</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 3</strong>
+          <div>
+            <p>הגדרת בעיה וכתיבת HMW.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 5: Problem framing</span>
+              <span class="meta">מפגש 6: HMW</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 4</strong>
+          <div>
+            <p>רעיון, brainstorming ותרגול סקיצות מהיר.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 7: Ideation</span>
+              <span class="meta">מפגש 8: Sketching</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 5</strong>
+          <div>
+            <p>בחירת קונספט, value proposition ותיעדוף.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 9: Concepts</span>
+              <span class="meta">מפגש 10: Prioritization</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 6</strong>
+          <div>
+            <p>הערכת קונספטים, החלטה על כיוון מוביל.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 11: Kano</span>
+              <span class="meta">מפגש 12: Decision</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 7</strong>
+          <div>
+            <p>אב טיפוס low-fidelity ותרחישי בדיקה.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 13: Prototyping</span>
+              <span class="meta">מפגש 14: Test script</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 8</strong>
+          <div>
+            <p>User feedback, MVP ושיפור ראשוני.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 15: Feedback</span>
+              <span class="meta">מפגש 16: MVP</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 9</strong>
+          <div>
+            <p>Iteration, תיקון על סמך בדיקות ושיפור UX.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 17: Iteration</span>
+              <span class="meta">מפגש 18: Refinement</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 10</strong>
+          <div>
+            <p>Case studies קלאסיים וניתוח החלטות עיצוב.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 19: Case study</span>
+              <span class="meta">מפגש 20: Analysis</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 11</strong>
+          <div>
+            <p>בניית מצגת פרויקט, story flow ופרזנטציה.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 21: Storytelling</span>
+              <span class="meta">מפגש 22: Presentation</span>
+            </div>
+          </div>
+        </div>
+        <div class="week">
+          <strong>שבוע 12</strong>
+          <div>
+            <p>מבחן סיום והצגת הפרויקט הסופי.</p>
+            <div class="lesson-meta">
+              <span class="meta">מפגש 23: Exam</span>
+              <span class="meta">מפגש 24: Final review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="tasks">
+      <h1>משימות ביניים</h1>
+      <div class="grid">
+        <div class="card">
+          <h3>משימה 1</h3>
+          <p>ניתוח 3 מוצרים יומיומיים לפי affordance, mapping ו-feedback.</p>
+        </div>
+        <div class="card">
+          <h3>משימה 2</h3>
+          <p>ראיונות משתמשים וכתיבת תובנות.</p>
+        </div>
+        <div class="card">
+          <h3>משימה 3</h3>
+          <p>לוח רעיונות וסקיצות מהירות.</p>
+        </div>
+        <div class="card">
+          <h3>משימה 4</h3>
+          <p>3 קונספטים וסקירת יתרונות/חסרונות.</p>
+        </div>
+        <div class="card">
+          <h3>משימה 5</h3>
+          <p>אבטיפוס ראשוני ובדיקת משתמשים.</p>
+        </div>
+        <div class="card">
+          <h3>משימה 6</h3>
+          <p>גרסה שנייה עם תיקונים מתועדים.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="exam">
+      <h1>מבחנים</h1>
+      <div class="card">
+        <h3>מבחן אמצע</h3>
+        <p>מושגים, מחקר, problem framing וניתוח case study קצר.</p>
+      </div>
+      <div class="card">
+        <h3>מבחן סיום</h3>
+        <p>ניתוח פרויקט, תהליך, החלטות עיצוב והצגה מקצועית.</p>
+      </div>
+    </div>
+
+    <div class="section" id="project">
+      <h1>פרויקט מסכם</h1>
+      <div class="two-col">
+        <div class="card">
+          <label>שם הפרויקט</label>
+          <input placeholder="לדוגמה: פתרון לניהול מטלות בבית" />
+
+          <label>קהל יעד</label>
+          <input placeholder="למשל: סטודנטים, משפחות, בעלי רכב" />
+
+          <label>תיאור קצר</label>
+          <textarea rows="6" placeholder="כתבו את הבעיה, המשתמשים, והפתרון המוצע"></textarea>
+        </div>
+
+        <div class="card">
+          <h3>תוצרים נדרשים</h3>
+          <ul>
+            <li>מסמך מחקר.</li>
+            <li>3 קונספטים.</li>
+            <li>אבטיפוס.</li>
+            <li>בדיקות משתמשים.</li>
+            <li>הצגת סיום.</li>
+          </ul>
+          <div class="divider"></div>
+          <p class="footnote">
+            אפשר להרחיב את הממשק הזה למסד נתונים, שמירת שיעורים, מעקב התקדמות, וקבצים מצורפים.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const tabs = document.querySelectorAll('#tabs button');
+  const sections = document.querySelectorAll('.section');
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      btn.classList.add('active');
+      sections.forEach(s => s.classList.remove('active'));
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
